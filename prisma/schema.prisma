@@ -28,40 +28,38 @@ model User{
 }
 
 
-model Blog{
-  id        Int       @id@default(autoincrement())
-  title     String
-  content   String
-  createdAt DateTime  @default(now())
-  authorId  Int
-  author    User      @relation(fields: [authorId],references: [id])
-  comments  Comment[]
-  reactions Reaction[]
+model Comment {
+  id         Int        @id @default(autoincrement())
+  content    String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  author     User       @relation(fields: [authorId], references: [id])
+  authorId   Int
+  post       Blog       @relation(fields: [postId], references: [id])
+  postId     Int
+  parentId   Int?       // For threading comments
+  parent     Comment?   @relation("ThreadedComments", fields: [parentId], references: [id])
+  replies    Comment[]  @relation("ThreadedComments")
 }
 
-model Comment{
-  id        Int       @id@default(autoincrement())
-  content   String
-  createdAt DateTime  @default(now())
-  postId    Int
-  authorId  Int
-  post      Blog      @relation(fields: [postId],references: [id])
-  author      User      @relation(fields: [authorId],references: [id])
-
+model Blog {
+  id         Int        @id @default(autoincrement())
+  title      String
+  content    String
+  createdAt  DateTime   @default(now())
+  author     User       @relation(fields: [authorId], references: [id])
+  authorId   Int
+  comments   Comment[]  // Add this relation for comments
 }
+
+
 
 model Reaction{
   id        Int       @id@default(autoincrement())
-  type      ReactionType
+  count     Int       @default(0)
   postId    Int
   authorId  Int
-  post      Blog      @relation(fields: [postId],references: [id])
   author    User      @relation(fields: [authorId],references: [id])
-}
-
-enum ReactionType{
-  THUMBS_UP
-  THUMBS_DOWN
 }
 
 enum Role{

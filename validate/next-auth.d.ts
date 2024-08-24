@@ -1,36 +1,31 @@
-// types/next-auth.d.ts
+// next-auth.d.ts
+import NextAuth from "next-auth";
+import { JWT } from "next-auth/jwt";
 
-import { DefaultSession, DefaultUser } from "next-auth";
-import { JWT as NextAuthJWT } from "next-auth/jwt";
-
-// Extend the default User type
 declare module "next-auth" {
-    interface User extends DefaultUser {
-        id: string;
-        name: string;
-        email: string;
-        username: string;
-        isAdmin?: boolean; // Add isAdmin to User type
-    }
+  interface Session {
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      username: string;
+      role: "ADMIN" | "USER"; // Ensure this matches your schema
+    } & DefaultSession["user"];
+  }
 
-    interface Session {
-        user: {
-            id: string;
-            name: string;
-            email: string;
-            username: string;
-            isAdmin?: boolean; // Add isAdmin to Session user type
-        } & DefaultSession["user"];
-    }
-}
+  interface User {
+    id: string;
+    name: string;
+    email: string;
+    username: string;
+    role: "ADMIN" | "USER"; // Ensure this matches your schema
+  }
 
-// Extend JWT type
-declare module "next-auth/jwt" {
-    interface JWT extends NextAuthJWT {
-        id: string;
-        name: string;
-        email: string;
-        username: string;
-        isAdmin?: boolean; // Add isAdmin to JWT type
-    }
+  interface JWT {
+    id: string;
+    name: string;
+    email: string;
+    username: string;
+    role: "ADMIN" | "USER"; // Ensure this matches your schema
+  }
 }

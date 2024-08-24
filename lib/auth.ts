@@ -1,7 +1,17 @@
+// auth.ts or your NextAuth configuration file
 import NextAuth, { AuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import client from '@/db'; // Ensure this path is correct
 import bcrypt from 'bcrypt';
+
+// Define the User type based on your Prisma schema
+interface User {
+    id: string;
+    name: string;
+    email: string;
+    username: string;
+    role: "ADMIN" | "USER";
+}
 
 export const authValues: AuthOptions = {
     providers: [
@@ -19,7 +29,7 @@ export const authValues: AuthOptions = {
                 try {
                     console.log("Attempting to find user with username:", credentials.username);
             
-                    const user = await client.user.findFirst({
+                    const user = await client.user.findUnique({
                         where: {
                             username: credentials.username
                         }
@@ -36,18 +46,19 @@ export const authValues: AuthOptions = {
                         throw new Error("Invalid Password");
                     }
             
+                    // Return user object that matches the Prisma User model
                     return {
                         id: user.id.toString(),
                         name: user.name,
                         email: user.email,
-                        username: user.username
-                    };
+                        username: user.username,
+                        role: user.role // Ensure this matches your schema
+                    } as User;
                 } catch (e) {
                     console.error(e);
                     throw new Error("An error occurred during authorization");
                 }
             }
-            
         })
     ],
     pages: {
@@ -64,6 +75,7 @@ export const authValues: AuthOptions = {
                 token.name = user.name;
                 token.email = user.email;
                 token.username = user.username;
+                token.role = user.role; // Include role as defined in types
             }
             return token;
         },
@@ -71,9 +83,10 @@ export const authValues: AuthOptions = {
             if (token) {
                 session.user = {
                     id: token.id as string,
-                    name: token.firstname as string,
-                    email: token.lastname as string,
-                    username: token.username as string
+                    name: token.name as string,
+                    email: token.email as string,
+                    username: token.username as string,
+                    role: token.role as "ADMIN" | "USER" // Ensure this matches the JWT structure
                 };
             }
             return session;
