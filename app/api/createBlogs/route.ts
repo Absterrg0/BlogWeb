@@ -50,7 +50,6 @@ export async function GET() {
                     }
                 },
                 comments: true,
-                reactions: true,
             }
         });
 

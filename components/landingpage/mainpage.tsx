@@ -21,7 +21,7 @@ export default function LandingPage() {
                     </h1>
                     <p className="text-lg mb-8 text-gray-300">
                         Discover and share your passion for writing and blogging. Connect with a community of like-minded individuals and express your creativity. 
-                        Whether you're a seasoned writer or just getting started, MyBlogSite is the perfect place to share your voice.
+                        Whether you are a seasoned writer or just getting started, MyBlogSite is the perfect place to share your voice.
                     </p>
                     <button
                         onClick={handleSignUp}
