@@ -46,7 +46,7 @@ export default function AppBar() {
             <div className="flex justify-between items-center p-4">
                 {/* Logo */}
                 <div className="text-2xl font-bold">
-                    MyBlogSite
+                    BlogMaster
                 </div>
 
                 {/* Search Form */}

@@ -17,7 +17,7 @@ export default function LandingPage() {
             <main className="relative flex-grow flex flex-col items-center justify-center text-center p-8">
                 <div className="max-w-2xl mx-auto relative z-10">
                     <h1 className="text-5xl font-bold mb-6 text-white leading-tight">
-                        Welcome to MyBlogSite
+                        Welcome to BlogMaster
                     </h1>
                     <p className="text-lg mb-8 text-gray-300">
                         Discover and share your passion for writing and blogging. Connect with a community of like-minded individuals and express your creativity. 
